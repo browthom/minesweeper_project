@@ -57,7 +57,7 @@ public class MineSweeperGame {
 	 * @param num The number of mines within the Cell array.
 	 *****************************************************************/
 	public MineSweeperGame(int size, int num) {
-		
+	
 		this.size = size;
 		this.totalMineCount = num;
 		status = GameStatus.NotOverYet;
@@ -133,16 +133,16 @@ public class MineSweeperGame {
 						// then increase the number of touching mines
 						if (board[cycleOrderRows[k]][cycleOrderColumns[k]].isMine() && !board[i][j].isMine())
 							numberOfTouchingMines++;	
+						}
 					}
-				}
-				
+	
 				// If the current cell is not a mine
 				if (!board[i][j].isMine())
 					board[i][j].setCount(numberOfTouchingMines);
 				// If the current cell is a mine, disregard number of touching mines value
 				else if (board[i][j].isMine())
 					board[i][j].setCount(-1);
-				
+			
 				// Clear number of mines for next go around
 				numberOfTouchingMines = 0;
 			}
@@ -172,7 +172,7 @@ public class MineSweeperGame {
 	public void expose(int row, int col) {
 		
 		int i = row, j = col;
-		
+			
 		// If not a mine and the cell hasn't been flagged
 		if (!board[row][col].isMine() && !board[row][col].isFlagged()) {
 			
@@ -190,41 +190,41 @@ public class MineSweeperGame {
 					// The cycle clockwise pattern around a specific cell
 					int[] cycleOrderRows = new int[] {i-1,i-1,i,i+1,i+1,i+1,i,i-1};
 					int[] cycleOrderColumns = new int[] {j,j+1,j+1,j+1,j,j-1,j-1,j-1};
-					
+				
 					// Ensure that the adjacent cell of interest exists and doesn't extend beyond the grid boundaries
 					if (cycleOrderRows[k] >= 0 && cycleOrderRows[k] < size && cycleOrderColumns[k] >= 0 && cycleOrderColumns[k] < size) {
-						
+					
 						// If the adjacent cell of interest isn't a mine or flagged
 						// and isn't already exposed
 						if (!board[cycleOrderRows[k]][cycleOrderColumns[k]].isMine() &&
 							!board[cycleOrderRows[k]][cycleOrderColumns[k]].isFlagged() &&
 							!board[cycleOrderRows[k]][cycleOrderColumns[k]].isExposed()) {
-							
+					
 							// recursively call
 							expose(cycleOrderRows[k], cycleOrderColumns[k]);
 						}
 					}
 				}
-				
+		
 				// Check game status
 				if (checkGameStatus()) {
 					status = GameStatus.Won;
 					return;
 				}
-			
+		
 			// Simply return when the specific cell is touching a mine,
 			// no need to expose any other adjacent cells.
 			// End recursion.
 			} else {
-				
+		
 				// Check game status
 				if (checkGameStatus()) {
 					status = GameStatus.Won;
 				}
-				
+		
 				return;
 			}
-	
+		
 		// A mine has been exposed; thus, the user loses.
 		// Don't need to worry that this else-statement will be executed during recursion.
 		} else if (!board[row][col].isFlagged()) {
@@ -265,16 +265,16 @@ public class MineSweeperGame {
 		// Iterate through grid
 		for (int row = 0; row < size; row++) {
 			for (int col = 0; col < size; col++) {
-				
+					
 				// Reset cells
 				board[row][col] = new Cell(0, false, false, false);
 			}
 		}
-
+	
 		// Set entire 2D array as false
 		for (int i = 0; i < size; i++)
 			Arrays.fill(alreadyChecked[i], false);
-		
+	
 		// Reset number of exposed cells to 0
 		numberOfExposed = 0;
 		
